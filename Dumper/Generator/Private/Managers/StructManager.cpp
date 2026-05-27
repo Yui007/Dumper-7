@@ -67,8 +67,13 @@ void StructManager::InitAlignmentsAndNames()
 	
 	for (auto Obj : ObjectArray())
 	{
-		if (Obj.IsA(EClassCastFlags::Struct))
-			AllStructs.push_back(Obj.Cast<UEStruct>());
+	    if (!Obj)
+	        continue;
+	
+	    auto ClassName = Obj.GetClass().GetName();
+	
+	    if (ClassName == "Struct" || ClassName == "UserDefinedStruct")
+	        AllStructs.push_back(Obj.Cast<UEStruct>());
 	}
 
 	for (auto ObjAsStruct : AllStructs)
